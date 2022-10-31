@@ -1,6 +1,7 @@
 try:
     from selenium import webdriver
     from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.chrome.options import Options
     NO_SELENIUM = False                 
 except ImportError:
     NO_SELENIUM = True
@@ -9,6 +10,9 @@ from bs4 import BeautifulSoup
 import sys
 import re
 import mysql.connector
+
+options = Options()
+options.headless = True
 
 db = mysql.connector.connect(
   host="localhost",
@@ -34,9 +38,8 @@ def get_html_from_url(url, render_js=False):
         if NO_SELENIUM:
             print('Selenium module not installed!')
         else:
-            with webdriver.Chrome(ChromeDriverManager().install()) as browser:
-                browser.get(url)
-                response = browser.page_source
+            browser.get(url)
+            response = browser.page_source
     else: 
         response = get(url).text 
     return response
@@ -60,6 +63,7 @@ def extractsite(url):
     if '-js' in args:
         render_js = True
         print('Rendering with Selenium...')
+        
     else:
         render_js = False
         print('Getting static HTML...')
@@ -84,7 +88,11 @@ def LoopUrlFile():
             print("Error")
 
 if __name__ == "__main__":
-
-    args = sys.argv
     
+    args = sys.argv
+    if NO_SELENIUM:
+        print('Selenium module not installed!')
+    else:
+        
+        browser=webdriver.Chrome(executable_path="chromedriver.exe",options=options)
     LoopUrlFile()
