@@ -11,14 +11,15 @@ import mysql.connector
 
 
 updateEmail="""UPDATE kontak SET Email=%s WHERE Website=%s"""
-getURLs="""SELECT Website FROM kontak WHERE Email='' AND Website<>'' ORDER BY RAND()"""
+
+getURLs="""SELECT Website FROM kontak WHERE (Email='' OR Email IS NULL) AND Website!='' ORDER BY RAND()"""
 
 
 db = mysql.connector.connect(
-  host="fleecyminimal.com",
-  user="admin",
-  password="alpalp123",
-  database="beverwijk"
+  host="",
+  user="",
+  password="",
+  database=""
 ) 
 
 crs = db.cursor()
